@@ -16,7 +16,7 @@ class DocService {
   }
 
   async createDocument({
-    slug,
+    currentUserId,
     name,
     contact,
     address,
@@ -29,7 +29,7 @@ class DocService {
         const response = await this.database.createDocument(
           conf.appwrite_database_id,
           conf.appwrite_collection_id,
-          slug,
+          currentUserId,
           {
             name,
             contact,
@@ -48,7 +48,7 @@ class DocService {
 
 
 
-  async updateDocument(slug, name,
+  async updateDocument(currentUserId, name,
     contact,
     address,
     college,
@@ -58,7 +58,7 @@ class DocService {
             return await this.database.updateDocument(
                 conf.appwrite_database_id,
                 conf.appwrite_collection_id,
-                slug,
+                currentUserId,
                 {
                     name,
                     contact,
@@ -73,12 +73,12 @@ class DocService {
         }
 }
 
-async getDocument(slug) {
+async getDocument(currentUserId) {
     try {
       const response = await this.database.getDocument(
         conf.appwrite_database_id,
         conf.appwrite_collection_id,
-        slug
+        currentUserId
       );
       return response;
     } catch (error) {
@@ -87,12 +87,12 @@ async getDocument(slug) {
   }
 
 
-async deleteDocument(slug) {
+async deleteDocument(currentUserId) {
     try {
         return await this.database.deleteDocument(
             conf.appwrite_database_id,
             conf.appwrite_collection_id,
-            slug
+            currentUserId
         )
     } catch (error) {
         console.log("Appwrite DocService :: deleteDocument :: error", error);

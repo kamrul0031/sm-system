@@ -2,7 +2,7 @@
 
 import authService from "@/appwrite/authService";
 import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { login, logout } from "@/store/features/authSlice";
 import { useRouter } from "next/navigation";
 import LogoutComp from "./LogoutComp";
@@ -11,6 +11,10 @@ export default function HomeContainer() {
   const [authStatus, setAuthStatus] = useState(false);
   const dispatch = useDispatch();
   const router = useRouter();
+
+  const currentUser = useSelector((state) => state.auth.userData);
+  const currentUser_id = currentUser?.$id;
+  console.log(currentUser_id)
 
   useEffect(() => {
     const fethcCurrentUser = async () => {
@@ -67,3 +71,4 @@ export default function HomeContainer() {
     </div>
   );
 }
+

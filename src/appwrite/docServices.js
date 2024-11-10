@@ -127,7 +127,7 @@ async uploadFile(file) {
     }
   }
 
-  async getFilePreview(){
+  async getFilePreview(fileId){
     return this.storage.getFilePreview(conf.apwrite_storage_id, fileId)
   }
 

@@ -35,13 +35,14 @@ export default function UserDataFormComp() {
   }, [imageFile]);
 
 
-  const currentUser = useSelector((state) => state.auth.userData?.$id);
+  const currentUser_id = useSelector((state) => state.auth.userData?.userId);
+  console.log(currentUser_id)
 
   const onSubmit = async (data) => {
 
     const isUserImageUploaded = await docService.uploadFile(data.image[0]);
     data.userImageId = isUserImageUploaded.$id
-    data.currentUserId = currentUser
+    data.currentUserId = currentUser_id
 
     if (isUserImageUploaded) {
       const isUserDocumentCreated = await docService.createDocument(data);

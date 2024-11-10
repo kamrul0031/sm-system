@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { login, logout } from "@/store/features/authSlice";
 import { useRouter } from "next/navigation";
+import LogoutComp from "./LogoutComp";
 
 export default function HomeContainer() {
   const [authStatus, setAuthStatus] = useState(false);
@@ -24,15 +25,7 @@ export default function HomeContainer() {
     fethcCurrentUser();
   }, [dispatch]);
 
-  const logoutHandler = async () => {
-    const isUserLoggedOut = await authService.logout();
-    if (isUserLoggedOut) {
-      alert("User logged out successfully");
-      router.replace("/Authentication/login");
-    }
-    dispatch(logout());
-    setAuthStatus(false);
-  };
+  
 
   return (
     <div className="flex flex-col items-center justify-center">
@@ -48,28 +41,23 @@ export default function HomeContainer() {
       {authStatus ? (
         <div className="flex gap-3">
           <button
-            onClick={() => router.push("/Authentication/userDashboard")}
+            onClick={() => router.push("/user-dashboard")}
             className=" w-auto px-4 py-2 mt-4 capitalize text-white bg-gray-900 border border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white"
           >
             user dashboard
           </button>
-          <button
-            onClick={logoutHandler}
-            className=" w-20 px-4 py-2 mt-4 capitalize text-white bg-gray-900 border border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white"
-          >
-            Logout
-          </button>
+          <LogoutComp/>
         </div>
       ) : (
         <div className="flex gap-3">
           <button
-            onClick={() => router.push("/Authentication/login")}
+            onClick={() => router.replace("/Authentication/login")}
             className=" w-20 px-4 py-2 mt-4 capitalize text-white bg-gray-900 border border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white"
           >
             login
           </button>
           <button
-            onClick={() => router.push("/Authentication/signup")}
+            onClick={() => router.replace("/Authentication/signup")}
             className=" w-20 px-4 py-2 mt-4 captalize text-white bg-gray-900 border border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white"
           >
             signup

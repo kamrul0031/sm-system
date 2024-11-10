@@ -28,7 +28,7 @@ export default function HomeContainer() {
     const isUserLoggedOut = await authService.logout();
     if (isUserLoggedOut) {
       alert("User logged out successfully");
-      router.repalace("/Authentication/login");
+      router.replace("/Authentication/login");
     }
     dispatch(logout());
     setAuthStatus(false);

@@ -11,9 +11,9 @@ export default function LogoutComp() {
   const logoutBtnHandler = async () => {
     const isUserLoggedOut = await authService.logout();
     if (isUserLoggedOut) {
-      alert("User logged out successfully");
-      router.replace("/");
       dispatch(logout());
+      alert("User logged out successfully");
+      router.replace("/Authentication/login");
     }
   };
 

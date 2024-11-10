@@ -22,9 +22,9 @@ class AuthService {
                 email,
                 password,
                 name
-            )
+            );
             if(userAccount){
-               return await this.login(email,password)
+                return await this.login({email,password});
             }
         } catch (error) {
            console.log("Appwrite AuthService :: createAccount :: error", error); 
@@ -33,7 +33,7 @@ class AuthService {
 
     async login({email,password}){
         try {
-           await this.account.createEmailPasswordSession(email,password)
+          return await this.account.createEmailPasswordSession(email,password)
         } catch (error) {
             console.log("Appwrite AuthService :: login :: error", error); 
         }

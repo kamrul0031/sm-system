@@ -1,14 +1,25 @@
 
 "use client"
+import authService from '@/appwrite/authService';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import {useForm} from 'react-hook-form';
+import { useDispatch } from 'react-redux';
+import {login,logout} from '@/store/features/authSlice';
 
 
 export default function LoginComp() {
 
+    const router = useRouter()
+    const dispatch = useDispatch();
+
     const {register, handleSubmit, formState: {errors, isSubmitting}} = useForm()
     const onSubmit = async(data) => {
-        console.log(data)
+        const isUserLogedIn = await authService.login(data)
+        if(isUserLogedIn){
+            dispatch(login(isUserLogedIn))
+            router.replace("/Authentication/user-data-form")
+        }
     }
     return (
         <div className="flex flex-col gap-2 items-center justify-center h-screen">

@@ -17,6 +17,7 @@ class DocService {
 
   async createDocument({
     currentUserId,
+    userImageId,
     name,
     contact,
     address,
@@ -31,6 +32,7 @@ class DocService {
           conf.appwrite_collection_id,
           currentUserId,
           {
+            userImageId,
             name,
             contact,
             address,

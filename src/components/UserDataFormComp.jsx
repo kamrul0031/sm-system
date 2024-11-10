@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useRouter } from "next/navigation";
+import docService from "@/appwrite/docServices";
 
 
 export default function UserDataFormComp() {
@@ -17,13 +18,11 @@ export default function UserDataFormComp() {
   const { register, handleSubmit, formState: { errors, isSubmitting }, watch } = useForm();
   const [imagePreview, setImagePreview] = useState(null);
 
-  const onSubmit = async (data) => {
-    console.log(data);
-  };
+  
+
 
   // Watch the image input
   const imageFile = watch("image");
-
   // Use useEffect to update the image preview only when the imageFile changes
   useEffect(() => {
     if (imageFile && imageFile[0]) {
@@ -34,6 +33,26 @@ export default function UserDataFormComp() {
       return () => URL.revokeObjectURL(previewUrl);
     }
   }, [imageFile]);
+
+
+  const currentUser = useSelector((state) => state.auth.userData?.$id);
+
+  const onSubmit = async (data) => {
+
+    const isUserImageUploaded = await docService.uploadFile(data.image[0]);
+    data.userImageId = isUserImageUploaded.$id
+    data.currentUserId = currentUser
+
+    if (isUserImageUploaded) {
+      const isUserDocumentCreated = await docService.createDocument(data);
+      if (isUserDocumentCreated) {
+        alert("user data saved successfully")
+      }else{
+        alert("something went wrong")
+      }
+    }
+  };
+
 
   return (
     <main>

@@ -11,15 +11,12 @@ export default function HomeContainer() {
   const [authStatus, setAuthStatus] = useState(false);
   const dispatch = useDispatch();
   const router = useRouter();
-
-  const currentUser = useSelector((state) => state.auth.userData);
-  const currentUser_id = currentUser?.$id;
-  console.log(currentUser_id)
-
+  
+  const userData = useSelector((state) => state.auth.userData?.$id);
   useEffect(() => {
     const fethcCurrentUser = async () => {
       const authenticatedUser = await authService.getCurrentUser();
-      if (authenticatedUser) {
+      if (authenticatedUser?.status) {
         dispatch(login(authenticatedUser));
         setAuthStatus(true);
       } else {
@@ -27,8 +24,9 @@ export default function HomeContainer() {
       }
     };
     fethcCurrentUser();
-  }, [dispatch]);
-
+  }, []);
+  
+  console.log("store user data :",userData)
   
 
   return (
@@ -45,7 +43,7 @@ export default function HomeContainer() {
       {authStatus ? (
         <div className="flex gap-3">
           <button
-            onClick={() => router.push("/user-dashboard")}
+            onClick={() => router.replace("/user-dashboard")}
             className=" w-auto px-4 py-2 mt-4 capitalize text-white bg-gray-900 border border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white"
           >
             user dashboard

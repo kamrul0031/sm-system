@@ -4,7 +4,7 @@ import authService from '@/appwrite/authService';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import {useForm} from 'react-hook-form';
-import { useDispatch } from 'react-redux';
+import { useDispatch , useSelector } from 'react-redux';
 import {login,logout} from '@/store/features/authSlice';
 
 
@@ -17,7 +17,7 @@ export default function LoginComp() {
     const onSubmit = async (data) => {
 
             const loginResponse = await authService.login(data);
-            
+            console.log(loginResponse)
             if (loginResponse) {
                 dispatch(login(loginResponse)); // Assuming loginResponse contains userData
                 router.replace("/user-dashboard");

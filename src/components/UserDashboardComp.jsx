@@ -7,36 +7,45 @@ import docService from "@/appwrite/docServices";
 import UserDataForm from "@/app/Authentication/user-data-form/page";
 import LoginComp from "./LoginComp";
 import UserDataFormComp from "./UserDataFormComp";
+import { set } from "react-hook-form";
 
 export default function UserDashboardComp() {
-  const [userData, setUserData] = useState({});
-  const currentUserId = useSelector((state) => state.auth.userData?.userId);
+  const [userDocument, setUserDocument] = useState({});
+  const currentUserId = useSelector((state) => state.auth.userData?.$id);
+  console.log( "current user id",currentUserId)
   const [userImgUrl, setUserImgUrl] = useState(null);
   const [useFormFilledup, setuseFormFilledup] = useState(false);
   const [loading, setLoading] = useState(true);
 
+
   useEffect(() => {
     const checkingUserFormFilledUp = async () => {
+      const isUserFillupedForm = await docService.getDocument(currentUserId);
+      // console.log(isUserFillupedForm)
       try {
-        const isUserFillupedForm = await docService.getDocument(currentUserId);
         if (isUserFillupedForm) {
             const gettingUserData = await docService.getDocument(currentUserId);
-            console.log(gettingUserData)
+            // console.log(gettingUserData)
             if (gettingUserData) {
-            setUserData(gettingUserData);
+            setUserDocument(gettingUserData);
             const userImgUrl = await docService.getFilePreview(
-              gettingUserData?.userImageId
+              gettingUserData?.userImageId 
             );
             setUserImgUrl(userImgUrl);
             setuseFormFilledup(true);
+            
           }
-        }
-      } finally {
+    }
+      } finally{
         setLoading(false);
       }
-    };
+        
+  }
+
     checkingUserFormFilledUp();
-  }, []);
+  }, [currentUserId])
+  
+
 
   const router = useRouter();
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
@@ -80,7 +89,7 @@ export default function UserDashboardComp() {
           <div className="bg-gray-800 p-8 rounded-lg shadow-lg flex flex-col gap-2 lg:flex-row lg:gap-8 lg:p-12">
             <div className="flex flex-col gap-2">
               <h1 className="text-xl font-bold text-white self-center">
-                {userData.name} dashboard
+                {userDocument.name} dashboard
               </h1>
               {userImgUrl && (
                 <img
@@ -100,19 +109,19 @@ export default function UserDashboardComp() {
                     Email : 0f5tH@example.com
                   </h1>
                   <h1 className="text-sm font-light text-gray-400">
-                    Contact : {userData.contact}
+                    Contact : {userDocument.contact}
                   </h1>
                   <h1 className="text-sm font-light text-gray-400">
-                    Address : {userData.address}
+                    Address : {userDocument.address}
                   </h1>
                   <h1 className="text-sm font-light text-gray-400">
-                    College : {userData.college}
+                    College : {userDocument.college}
                   </h1>
                   <h1 className="text-sm font-light text-gray-400">
-                    Class : {userData.studentClass}
+                    Class : {userDocument.studentClass}
                   </h1>
                   <h1 className="text-sm font-light text-gray-400">
-                    Student ID : {userData.studentId}
+                    Student ID : {userDocument.studentId}
                   </h1>
                 </div>
               </div>

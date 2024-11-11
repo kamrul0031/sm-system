@@ -57,7 +57,7 @@ export default function UserDataFormComp() {
 
   return (
     <main>
-      {isAuthenticated ? (<div className="flex flex-col gap-2 items-center justify-center h-screen p-5 md:px-16">
+      {isAuthenticated ? (<div className="flex flex-col gap-2 items-center justify-center p-5 md:px-16">
         <h1 className="text-xl capitalize font-bold text-white">user information form</h1>
       <form
         className="flex flex-col gap-4 bg-gray-800 p-8 rounded-lg shadow-lg"

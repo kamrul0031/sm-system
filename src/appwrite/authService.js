@@ -15,7 +15,7 @@ class AuthService {
              this.database = new ID(conf.appwrite_database_id);
     }
 
-    async createAccount({email,password,name}){
+    async createAccount({ email, password, name }) {
         try {
             const userAccount = await this.account.create(
                 ID.unique(),
@@ -23,13 +23,21 @@ class AuthService {
                 password,
                 name
             );
-            if(userAccount){
-                return await this.login({email,password});
+            
+            if (userAccount) {
+                return await this.login({ email, password });
             }
         } catch (error) {
-           console.log("Appwrite AuthService :: createAccount :: error", error); 
+            console.log("Appwrite AuthService :: createAccount :: error", error);
+            // Provide a specific message based on error code
+            // if (error.code === 401) {
+            //     return { success: false, message: "Invalid credentials. Please check the email and password." };
+            // } else {
+            //     return { success: false, message: "An unexpected error occurred. Please try again later." };
+            // }
         }
     }
+    
 
     async login({email,password}){
         try {

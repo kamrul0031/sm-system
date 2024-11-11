@@ -14,15 +14,20 @@ export default function LoginComp() {
     const dispatch = useDispatch();
 
     const {register, handleSubmit, formState: {errors, isSubmitting}} = useForm()
-    const onSubmit = async(data) => {
-        const isUserLogedIn = await authService.login(data)
-        if(isUserLogedIn){
-            dispatch(login(isUserLogedIn))
-            router.replace("/Authentication/user-data-form")
-        }
-    }
+    const onSubmit = async (data) => {
+
+            const loginResponse = await authService.login(data);
+            
+            if (loginResponse) {
+                dispatch(login(loginResponse)); // Assuming loginResponse contains userData
+                router.replace("/user-dashboard");
+            } else {
+                alert("Login failed. Please check your credentials.");
+            }
+    };
+    
     return (
-        <div className="flex flex-col gap-2 items-center justify-center h-screen">
+        <div className="flex flex-col gap-2 items-center justify-center ">
             <h1 className="text-xl capitalize font-bold text-white">user login form</h1>
             <form onSubmit={handleSubmit(onSubmit)} className="bg-gray-800 p-8 rounded-lg shadow-lg flex flex-col gap-2">
                 <input type="text" {...register("email", {required: true})} placeholder="Email" className="block w-full px-4 py-2 text-gray-200 bg-gray-700 border border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white" />

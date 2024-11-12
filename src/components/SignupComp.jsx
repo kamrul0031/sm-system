@@ -16,7 +16,7 @@ export default function SignupComp() {
      const isUserLogedIn = await authService.createAccount(data)       
        if(isUserLogedIn){
         dispatch(login(isUserLogedIn))
-        router.replace("/")
+        router.replace("/user-dashboard")
        }else{
         alert("something went wrong")
         dispatch(logout())

@@ -8,6 +8,7 @@ import LoginComp from "./LoginComp";
 import UserDataFormComp from "./UserDataFormComp";
 import authService from "@/appwrite/authService";
 import {login,logout} from '@/store/features/authSlice';
+import useCurrentUser from "@/custom-hooks/useCurrentUser";
 
 export default function UserDashboardComp() {
   const [userDocument, setUserDocument] = useState({});
@@ -20,10 +21,12 @@ export default function UserDashboardComp() {
   const router = useRouter();
   const dispatch = useDispatch();
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
+  console.log(isAuthenticated ? "authenticated" : "not authenticated");
 
+  useCurrentUser()
   useEffect(() => {
     const checkingUserFormFilledUp = async () => {
-      try {
+    
         const isUserFillupedForm = await docService.getDocument(currentUserId);
         // console.log("isUserFillupedForm", isUserFillupedForm);
         if (isUserFillupedForm) {
@@ -33,11 +36,8 @@ export default function UserDashboardComp() {
           setUserImgUrl(userImgUrl);
           setUseFormFilledup(true);
         }else{
-          setUseFormFilledup(false);
+          setLoading(false)
         }
-      } finally {
-        setLoading(false);
-      }
     };
 
     checkingUserFormFilledUp();

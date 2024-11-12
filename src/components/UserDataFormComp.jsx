@@ -47,7 +47,7 @@ export default function UserDataFormComp() {
     if (isUserImageUploaded) {
       const isUserDocumentCreated = await docService.createDocument(data);
       if (isUserDocumentCreated) {
-        router.refresh("/user-dashboard")
+        router.refresh("/")
         alert("user data saved successfully")
       }else{
         alert("something went wrong")

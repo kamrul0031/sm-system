@@ -9,24 +9,32 @@ import LogoutComp from "./LogoutComp";
 
 export default function HomeContainer() {
   const [authStatus, setAuthStatus] = useState(false);
+  const [currentUser, setCurrenttUser] = useState({})
   const dispatch = useDispatch();
   const router = useRouter();
   
-  const userData = useSelector((state) => state.auth.userData?.$id);
+  // const userData = useSelector((state) => state.auth.userData?.userId);
   useEffect(() => {
-    const fethcCurrentUser = async () => {
+    const fetchCurrentUser = async () => {
       const authenticatedUser = await authService.getCurrentUser();
+  
       if (authenticatedUser?.status) {
-        dispatch(login(authenticatedUser));
+        const userWithId = { userId: authenticatedUser.$id, ...authenticatedUser };
+        
+        setCurrenttUser(userWithId); // Corrected the typo
+        console.log(userWithId);    // Log the updated user object
+        dispatch(login(userWithId)); // Pass directly to dispatch
         setAuthStatus(true);
       } else {
         dispatch(logout());
       }
     };
-    fethcCurrentUser();
+  
+    fetchCurrentUser();
   }, []);
   
-  console.log("store user data :",userData)
+  
+  // console.log("store user data :",userData)
   
 
   return (

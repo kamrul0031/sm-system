@@ -17,11 +17,13 @@ export default function LoginComp() {
     const onSubmit = async (data) => {
 
             const loginResponse = await authService.login(data);
-            console.log(loginResponse)
-            if (loginResponse) {
+            console.log("loginResponse top : ",loginResponse)
+            if (loginResponse?.current) {
                 dispatch(login(loginResponse)); // Assuming loginResponse contains userData
+                console.log("loginResponse in :",loginResponse)
                 router.replace("/user-dashboard");
             } else {
+                dispatch(logout());
                 alert("Login failed. Please check your credentials.");
             }
     };
@@ -42,3 +44,9 @@ export default function LoginComp() {
         </div>
     );
 }
+
+
+//home -> $id
+
+//login  -> userId
+//

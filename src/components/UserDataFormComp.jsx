@@ -21,35 +21,33 @@ export default function UserDataFormComp() {
   const [imagePreview, setImagePreview] = useState(null);
 
 
-  const isUserDocumentCreated = async() => {
-    try {
-     return await docService.getDocument(currentUserId);
-    } catch (error) {
-      console.log("Document check failed:", error)
-      return null
-    }
-    
-  }
-
   useEffect(() => {
-
-    const userDocumentAlreadyExist = async() => {
-      const isUserDocumentCreated = await isUserDocumentCreated(currentUserId);
-      if(isUserDocumentCreated){
-        alert("User document already exists! But you can update it");
+    const checkingUserDocumentCreated = async () => {
+      try {
+        return await docService.getDocument(currentUserId);
+      } catch (error) {
+        console.log("Document check failed:", error);
+        return null;
       }
-    }
-    if(currentUserId){
-      userDocumentAlreadyExist()
-    }
-  }, [currentUserId])
+    };
   
+    const userDocumentAlreadyExist = async () => {
+      const document = await checkingUserDocumentCreated();
+      if (document) {
+        alert("User document already exists! But you can update it.");
+      } else {
+        alert("User document does not exist! Please fill up the form.");
+      }
+    };
+  
+    if (currentUserId) {
+      userDocumentAlreadyExist();
+    }
+  }, [currentUserId]);
   const createOrUpdateFormChecking = async (data) => {
     
-    if (isUserDocumentCreated) { 
+    if (UserDocumentCreated) { 
       // Update form data
-      console.log("isUserDocumentCreated", isUserDocumentCreated);
-      console.log("currentUserImageId", isUserDocumentCreated?.userImageId);
       const file = data.image[0] ? await docService.uploadFile(data.image[0]) : null;
       if (file) {
         console.log("updateFile", file);

@@ -48,7 +48,7 @@ export default function UserDashboardComp() {
   const conditionalRenderedComp = () => {
     if (loading) return lodingComp();
     if (!isAuthenticated) return notAuthComp();
-    if (isAuthenticated && !useFormFilledup) return userDataNotFilledUpComp();
+    if (isAuthenticated && !useFormFilledup) return userDataNotFilledUpComp(router);
     if (isAuthenticated && useFormFilledup) return userDocumentComp({ userDocument, userImgUrl, editBtnHandler });
     return null;
   };
@@ -71,12 +71,12 @@ const notAuthComp = () => (
   </div>
 );
 
-const userDataNotFilledUpComp = () => (
+const userDataNotFilledUpComp = (router) => (
   <div className="flex flex-col h-screen items-center justify-center">
     <h1 className="text-xl font-bold text-white capitalize">
       You need to fill up the user form
     </h1>
-    <UserDataFormComp />
+    <button onClick={() => router.replace("/Authentication/user-data-form")}>go to user-data-form</button>
   </div>
 );
 

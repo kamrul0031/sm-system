@@ -20,8 +20,32 @@ export default function UserDataFormComp() {
   const { register, handleSubmit, formState: { errors, isSubmitting }, watch } = useForm();
   const [imagePreview, setImagePreview] = useState(null);
 
+
+  const isUserDocumentCreated = async() => {
+    try {
+     return await docService.getDocument(currentUserId);
+    } catch (error) {
+      console.log("Document check failed:", error)
+      return null
+    }
+    
+  }
+
+  useEffect(() => {
+
+    const userDocumentAlreadyExist = async() => {
+      const isUserDocumentCreated = await isUserDocumentCreated(currentUserId);
+      if(isUserDocumentCreated){
+        alert("User document already exists! But you can update it");
+      }
+    }
+    if(currentUserId){
+      userDocumentAlreadyExist()
+    }
+  }, [currentUserId])
+  
   const createOrUpdateFormChecking = async (data) => {
-    const isUserDocumentCreated = await docService.getDocument(currentUserId);
+    
     if (isUserDocumentCreated) { 
       // Update form data
       console.log("isUserDocumentCreated", isUserDocumentCreated);
@@ -37,6 +61,7 @@ export default function UserDataFormComp() {
         userImageId: file?.$id,
       });
       if (updateFormData) {
+        alert("Form data updated successfully");
         router.replace("/");
       }
     } else {

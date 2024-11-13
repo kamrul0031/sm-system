@@ -50,18 +50,19 @@ class DocService {
 
 
 
-  async updateDocument(currentUserId, name,
+  async updateDocument(currentUserId, { userImageId,name,
     contact,
     address,
     college,
     studentClass,
-    studentId,) {
+    studentId}) {
         try {
             return await this.database.updateDocument(
                 conf.appwrite_database_id,
                 conf.appwrite_collection_id,
                 currentUserId,
                 {
+                  userImageId,
                     name,
                     contact,
                     address,

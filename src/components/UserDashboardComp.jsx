@@ -41,7 +41,9 @@ export default function UserDashboardComp() {
     }
   }, [currentUserId]);
 
-  const editBtnHandler = () => {};
+  const editBtnHandler = () => {
+    router.replace("/Authentication/user-data-form");
+  };
 
   const conditionalRenderedComp = () => {
     if (loading) return lodingComp();
